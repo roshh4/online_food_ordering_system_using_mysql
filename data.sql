@@ -208,3 +208,8 @@ drop table bill;
 drop table cart_items;
 drop table cart_info;
 drop table customer;
+ALTER TABLE restaurants
+ADD COLUMN images VARCHAR(255);
+UPDATE restaurants
+SET images = 'images/La_Trattoria.JPEG'
+WHERE restaurant_id = 1;

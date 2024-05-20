@@ -17,6 +17,8 @@ def create_connection():
         print(f"The error '{e}' occurred")
     return connection
 
+conn = create_connection()
+
 # Function to insert customer details into the database
 def insert_customer(connection, customer_name, contact_number, email):
     try:
@@ -35,14 +37,12 @@ def get_restaurants():
     try:
         if conn.is_connected():
             cursor = conn.cursor()
-            cursor.execute("SELECT restaurant_name FROM restaurants")
+            cursor.execute("SELECT restaurant_name, images FROM restaurants")
             rows = cursor.fetchall()
-            restaurants = [row[0] for row in rows]
-    except Exception as e:
+            restaurants = [(row[0], row[1]) for row in rows]
+    except Error as e:
         st.error(f"Error retrieving restaurant names: {e}")
     return restaurants
-
-conn = create_connection()
 
 if conn:
     if 'page' not in st.session_state:
