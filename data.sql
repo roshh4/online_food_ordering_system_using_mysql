@@ -6,7 +6,7 @@ INSERT INTO restaurants (restaurant_id, restaurant_name, cuisine, category) VALU
 INSERT INTO restaurants (restaurant_id, restaurant_name, cuisine, category) VALUES (4, 'Burger Haven', 'American', 'Fast Food');
 INSERT INTO restaurants (restaurant_id, restaurant_name, cuisine, category) VALUES (5, 'Dosa Delight', 'South Indian', 'Casual Dining');
 CREATE TABLE Customer (
-    Customer_id INT PRIMARY KEY,
+    Customer_id INT AUTO_INCREMENT PRIMARY KEY,
     Customer_name VARCHAR(30),
     Contact_Number VARCHAR(30),
     Address VARCHAR(100),
@@ -203,4 +203,8 @@ CREATE TABLE bill (
     FOREIGN KEY (cart_id) REFERENCES cart_info(cart_id),
     FOREIGN KEY (customer_id) REFERENCES Customer(customer_id)
 );
+select * from customer;
 drop table bill;
+drop table cart_items;
+drop table cart_info;
+drop table customer;
