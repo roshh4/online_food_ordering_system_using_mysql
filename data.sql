@@ -208,8 +208,9 @@ drop table bill;
 drop table cart_items;
 drop table cart_info;
 drop table customer;
-ALTER TABLE restaurants
+ALTER TABLE menu_items
 ADD COLUMN images VARCHAR(255);
-UPDATE restaurants
+UPDATE menu_items
 SET images = 'images/La_Trattoria.JPEG'
-WHERE restaurant_id = 1;
+WHERE restaurant_id = 5;
+select * from restaurants;
