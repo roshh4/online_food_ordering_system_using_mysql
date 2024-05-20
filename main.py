@@ -1,3 +1,6 @@
+import mysql.connector
+import MySQLdb
+import streamlit as st
 from customer_details import customer_details
 from choose_restaurant import choose_restaurant
 
@@ -13,7 +16,7 @@ def create_connection():
         )
         if connection.is_connected():
             print("Connection to MySQL DB successful")
-    except Error as e:
+    except MySQLdb.Error as e:
         print(f"The error '{e}' occurred")
     return connection
 
@@ -25,7 +28,7 @@ def insert_customer(connection, customer_name, contact_number, email):
         cursor.execute(query, (customer_name, contact_number, email))
         connection.commit()
         st.success("Customer inserted successfully")
-    except Error as e:
+    except MySQLdb.Error as e:
         st.error(f"Error: '{e}'")
 
 
@@ -53,7 +56,7 @@ if conn:
     if st.session_state['page'] == 'choose_restaurant':
         restaurants = get_restaurants()
         choose_restaurant(restaurants)
-=======
+
 import pandas as pd
 import numpy as np
 
