@@ -43,7 +43,7 @@ def get_restaurants():
             cursor.execute("SELECT restaurant_name, images FROM restaurants")
             rows = cursor.fetchall()
             restaurants = [(row[0], row[1]) for row in rows]
-    except Error as e:
+    except MySQLdb.Error as e:
         st.error(f"Error retrieving restaurant names: {e}")
     return restaurants
 
