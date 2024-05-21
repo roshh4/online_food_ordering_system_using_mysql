@@ -211,5 +211,5 @@ drop table customer;
 ALTER TABLE restaurants
 ADD COLUMN images VARCHAR(255);
 UPDATE restaurants
-SET images = 'images/La_Trattoria.JPEG'
-WHERE restaurant_id = 1;
+SET images = 'images/Sushi_World.JPEG'
+WHERE restaurant_id = 2;
