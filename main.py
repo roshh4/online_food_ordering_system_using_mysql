@@ -7,7 +7,6 @@ from streamlit_option_menu import option_menu
 with st.sidebar:
     selected = option_menu("Main Menu", ["Login", 'Restuarants'], 
         icons=['key', 'houses'], menu_icon="cast", default_index=1)
-    selected
 # Function to establish database connection
 def create_connection():
     connection = None
@@ -55,8 +54,8 @@ if conn:
     if 'page' not in st.session_state:
         st.session_state['page'] = 'customer_details'
 
-    if st.session_state['page'] == 'customer_details':
+    if st.session_state['page'] == 'customer_details' and selected=="Login":
         customer_details(conn, insert_customer)
-    if st.session_state['page'] == 'choose_restaurant':
+    if selected=="Restuarants":
         restaurants = get_restaurants()
         choose_restaurant(restaurants)

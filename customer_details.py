@@ -1,8 +1,5 @@
 import streamlit as st
 
-
-
-
 def customer_details(conn, insert_customer):
 
     st.title("Please Enter Your Details")
