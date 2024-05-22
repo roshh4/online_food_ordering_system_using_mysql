@@ -41,11 +41,11 @@ def create_connection():
 conn = create_connection()
 
 # Function to insert customer details into the database
-def insert_customer(connection, customer_name, contact_number, email):
+def insert_customer(connection, customer_name, contact_number, address, email):
     try:
         cursor = connection.cursor()
-        query = "INSERT INTO customer (customer_name, contact_number, address, email) VALUES (%s, %s, '', %s)"
-        cursor.execute(query, (customer_name, contact_number, email))
+        query = "INSERT INTO customer (customer_name, contact_number, address, email) VALUES (%s, %s, %s, %s)"
+        cursor.execute(query, (customer_name, contact_number, address, email))
         connection.commit()
         st.success("Customer inserted successfully")
     except MySQLdb.Error as e:
