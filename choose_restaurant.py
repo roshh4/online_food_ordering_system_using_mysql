@@ -1,6 +1,20 @@
 import streamlit as st
+from connection import conn
+import MySQLdb
 import os
 from streamlit_option_menu import option_menu
+
+def get_menu():
+    items = []
+    try:
+        if conn.is_connected():
+            cursor = conn.cursor()
+            cursor.execute("SELECT item_name, images FROM menu_items")
+            rows = cursor.fetchall()
+            items = [(row[0], row[1]) for row in rows]
+    except MySQLdb.Error as e:
+        st.error(f"Error retrieving item names: {e}")
+    return items
 
 def choose_restaurant(restaurants):
     with st.sidebar:
@@ -19,8 +33,15 @@ def choose_restaurant(restaurants):
     else:
         st.error(f"Image not found for {selected}")
 
-    if selected=='La Trattoria':
-        
+    #items = get_menu()
+    #image_path = None
+    #for row in items:
+    #    if row[0] == selected:
+    #        image_path = row[1]
+    #        break
+
+    #if selected=='La Trattoria':
+    #    st.image(image_path, caption=f"Image of {selected}", use_column_width=True)
 
     if st.button("Next"):
         st.session_state['selected_restaurant'] = selected
