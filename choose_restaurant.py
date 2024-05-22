@@ -26,4 +26,3 @@ def choose_restaurant(restaurants):
 
 def restaurant_menu():
     st.title(f"Menu for {st.session_state['selected_restaurant']}")
-    # You can add more logic here to display the menu items for the selected restaurant

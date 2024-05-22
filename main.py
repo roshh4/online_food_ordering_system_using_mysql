@@ -6,7 +6,6 @@ from choose_restaurant import choose_restaurant
 
 # Function to establish database connection
 def create_connection():
-    connection = None
     try:
         connection = mysql.connector.connect(
             host="localhost", 
@@ -16,30 +15,28 @@ def create_connection():
         )
         if connection.is_connected():
             print("Connection to MySQL DB successful")
+        return connection
     except Error as e:
-        print(f"The error '{e}' occurred")
-    return connection
-
-conn = create_connection()
+        st.error(f"The error '{e}' occurred")
+        return None
 
 # Function to insert customer details into the database
-def insert_customer(connection, customer_name, contact_number, email):
+def insert_customer(connection, customer_name, contact_number, email, address):
     try:
         cursor = connection.cursor()
-        query = "INSERT INTO customer (customer_name, contact_number, address, email) VALUES (%s, %s, '', %s)"
-        cursor.execute(query, (customer_name, contact_number, email))
+        query = "INSERT INTO customer (customer_name, contact_number, address, email) VALUES (%s, %s, %s, %s)"
+        cursor.execute(query, (customer_name, contact_number, email, address))
         connection.commit()
         st.success("Customer inserted successfully")
     except Error as e:
         st.error(f"Error: '{e}'")
 
-
-#function to get restaurant names from the databse
-def get_restaurants():
+# Function to get restaurant names and images from the database
+def get_restaurants(connection):
     restaurants = []
     try:
-        if conn.is_connected():
-            cursor = conn.cursor()
+        if connection.is_connected():
+            cursor = connection.cursor()
             cursor.execute("SELECT restaurant_name, images FROM restaurants")
             rows = cursor.fetchall()
             restaurants = [(row[0], row[1]) for row in rows]
@@ -47,12 +44,15 @@ def get_restaurants():
         st.error(f"Error retrieving restaurant names: {e}")
     return restaurants
 
+# Establish the connection
+conn = create_connection()
+
 if conn:
     if 'page' not in st.session_state:
         st.session_state['page'] = 'customer_details'
 
     if st.session_state['page'] == 'customer_details':
         customer_details(conn, insert_customer)
-    if st.session_state['page'] == 'choose_restaurant':
-        restaurants = get_restaurants()
+    elif st.session_state['page'] == 'choose_restaurant':
+        restaurants = get_restaurants(conn)
         choose_restaurant(restaurants)
