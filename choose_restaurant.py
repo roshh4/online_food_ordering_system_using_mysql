@@ -22,7 +22,7 @@ def choose_restaurant(restaurants):
     if st.button("Next"):
         st.session_state['selected_restaurant'] = selected_restaurant
         st.session_state['page'] = 'restaurant_menu'
-        st.experimental_rerun()
+        st.rerun()
 
 def restaurant_menu():
     st.title(f"Menu for {st.session_state['selected_restaurant']}")

@@ -210,7 +210,7 @@ drop table cart_info;
 drop table customer;
 ALTER TABLE menu_items
 ADD COLUMN images VARCHAR(255);
+UPDATE restaurants
+SET images = 'images/Sushi_World.JPEG'
+WHERE restaurant_id = 2;
 UPDATE menu_items
-SET images = 'images/La_Trattoria.JPEG'
-WHERE restaurant_id = 5;
-select * from restaurants;
