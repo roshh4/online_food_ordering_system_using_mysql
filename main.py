@@ -6,29 +6,46 @@ from choose_restaurant import choose_restaurant
 from streamlit_option_menu import option_menu
 
 # Function to establish database connection
+#roshini's
 def create_connection():
-    connection = None
     try:
         connection = mysql.connector.connect(
-            host="sql12.freesqldatabase.com	", 
-            user="sql12707743",
-            password="EfzR55xMVG",
-            database="sql12707743"
+            host="localhost", 
+            user="root",
+            password="R@shini444",
+            database="food_court"
         )
         if connection.is_connected():
             print("Connection to MySQL DB successful")
-    except MySQLdb.Error as e:
-        print(f"The error '{e}' occurred")
-    return connection
+        return connection
+    except Error as e:
+        st.error(f"The error '{e}' occurred")
+        return None
+
+#rethinaath's
+# def create_connection():
+#     connection = None
+#     try:
+#         connection = mysql.connector.connect(
+#             host="sql12.freesqldatabase.com", 
+#             user="sql12707743",
+#             password="EfzR55xMVG",
+#             database="sql12707743"
+#         )
+#         if connection.is_connected():
+#             print("Connection to MySQL DB successful")
+#     except MySQLdb.Error as e:
+#         print(f"The error '{e}' occurred")
+#     return connection
 
 conn = create_connection()
 
 # Function to insert customer details into the database
-def insert_customer(connection, customer_name, contact_number, email):
+def insert_customer(connection, customer_name, contact_number, address, email):
     try:
         cursor = connection.cursor()
-        query = "INSERT INTO customer (customer_name, contact_number, address, email) VALUES (%s, %s, '', %s)"
-        cursor.execute(query, (customer_name, contact_number, email))
+        query = "INSERT INTO customer (customer_name, contact_number, address, email) VALUES (%s, %s, %s, %s)"
+        cursor.execute(query, (customer_name, contact_number, address, email))
         connection.commit()
         st.success("Customer inserted successfully")
     except MySQLdb.Error as e:
