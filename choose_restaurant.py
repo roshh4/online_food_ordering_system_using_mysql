@@ -4,7 +4,7 @@ from streamlit_option_menu import option_menu
 
 def choose_restaurant(restaurants):
     with st.sidebar:
-        selected = option_menu("Restuarants", ["La Trattoria", "Sushi World","Taco Fiesta","Burger Haven","Dosa Delight"], icons=['house','house','house','house','house'], menu_icon="houses", default_index=1)
+        selected = option_menu("Restuarants", ["La Trattoria", "Sushi World","Taco Fiesta","Burger Haven","Dosa Delight"], icons=['house','house','house','house','house'], menu_icon="houses", default_index=0)
     st.title(selected)
 
     # Find the selected restaurant's image path
@@ -19,7 +19,8 @@ def choose_restaurant(restaurants):
     else:
         st.error(f"Image not found for {selected}")
 
-    
+    if selected=='La Trattoria':
+        
 
     if st.button("Next"):
         st.session_state['selected_restaurant'] = selected

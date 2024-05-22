@@ -64,6 +64,13 @@ def get_restaurants():
         st.error(f"Error retrieving restaurant names: {e}")
     return restaurants
 
+def get_menu():
+    menu = []
+    try:
+        if conn.is_connected():
+            cursor = conn.cursor()
+            cursor.execute("SELECT , images FROM restaurants")
+
 if conn:
     if 'page' not in st.session_state:
         st.session_state['page'] = 'customer_details'

@@ -208,9 +208,22 @@ drop table bill;
 drop table cart_items;
 drop table cart_info;
 drop table customer;
+
 ALTER TABLE menu_items
 ADD COLUMN images VARCHAR(255);
-UPDATE restaurants
-SET images = 'images/Sushi_World.JPEG'
-WHERE restaurant_id = 2;
+
 UPDATE menu_items
+SET images = 'images\La_Trattoria\Bruschetta.jpeg'
+WHERE item_id = 1;
+
+UPDATE menu_items
+SET images = 'images\La_Trattoria\Garlic_Bread.jpeg'
+WHERE item_id = 2;
+
+UPDATE menu_items
+SET images = 'images\La_Trattoria\Antipasto_Platter.jpeg'
+WHERE item_id = 3;
+
+UPDATE menu_items
+SET images = 'images\La_Trattoria\Antipasto_Platter.jpeg'
+WHERE item_id = 4;
