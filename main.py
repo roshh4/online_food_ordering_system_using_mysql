@@ -6,20 +6,37 @@ from choose_restaurant import choose_restaurant
 from streamlit_option_menu import option_menu
 
 # Function to establish database connection
+#roshini's
 def create_connection():
-    connection = None
     try:
         connection = mysql.connector.connect(
-            host="sql12.freesqldatabase.com	", 
-            user="sql12707743",
-            password="EfzR55xMVG",
-            database="sql12707743"
+            host="localhost", 
+            user="root",
+            password="R@shini444",
+            database="food_court"
         )
         if connection.is_connected():
             print("Connection to MySQL DB successful")
-    except MySQLdb.Error as e:
-        print(f"The error '{e}' occurred")
-    return connection
+        return connection
+    except Error as e:
+        st.error(f"The error '{e}' occurred")
+        return None
+
+#rethinaath's
+# def create_connection():
+#     connection = None
+#     try:
+#         connection = mysql.connector.connect(
+#             host="sql12.freesqldatabase.com", 
+#             user="sql12707743",
+#             password="EfzR55xMVG",
+#             database="sql12707743"
+#         )
+#         if connection.is_connected():
+#             print("Connection to MySQL DB successful")
+#     except MySQLdb.Error as e:
+#         print(f"The error '{e}' occurred")
+#     return connection
 
 conn = create_connection()
 
