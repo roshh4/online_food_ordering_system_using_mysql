@@ -3,40 +3,39 @@ import MySQLdb
 import streamlit as st
 from customer_details import customer_details
 from choose_restaurant import choose_restaurant
-from streamlit_option_menu import option_menu
 
 # Function to establish database connection
 #roshini's
+#def create_connection():
+#    try:
+#        connection = mysql.connector.connect(
+#            host="localhost", 
+#            user="root",
+#            password="R@shini444",
+#            database="food_court"
+#        )
+#        if connection.is_connected():
+#            print("Connection to MySQL DB successful")
+#        return connection
+#    except Error as e:
+#        st.error(f"The error '{e}' occurred")
+#        return None
+
+#rethinaath's
 def create_connection():
+    connection = None
     try:
         connection = mysql.connector.connect(
-            host="localhost", 
-            user="root",
-            password="R@shini444",
-            database="food_court"
+            host="sql12.freesqldatabase.com", 
+            user="sql12707743",
+            password="EfzR55xMVG",
+            database="sql12707743"
         )
         if connection.is_connected():
             print("Connection to MySQL DB successful")
-        return connection
-    except Error as e:
-        st.error(f"The error '{e}' occurred")
-        return None
-
-#rethinaath's
-# def create_connection():
-#     connection = None
-#     try:
-#         connection = mysql.connector.connect(
-#             host="sql12.freesqldatabase.com", 
-#             user="sql12707743",
-#             password="EfzR55xMVG",
-#             database="sql12707743"
-#         )
-#         if connection.is_connected():
-#             print("Connection to MySQL DB successful")
-#     except MySQLdb.Error as e:
-#         print(f"The error '{e}' occurred")
-#     return connection
+    except MySQLdb.Error as e:
+        print(f"The error '{e}' occurred")
+    return connection
 
 conn = create_connection()
 
@@ -65,6 +64,13 @@ def get_restaurants():
         st.error(f"Error retrieving restaurant names: {e}")
     return restaurants
 
+def get_menu():
+    menu = []
+    try:
+        if conn.is_connected():
+            cursor = conn.cursor()
+            cursor.execute("SELECT , images FROM restaurants")
+
 if conn:
     if 'page' not in st.session_state:
         st.session_state['page'] = 'customer_details'
@@ -73,6 +79,4 @@ if conn:
         customer_details(conn, insert_customer)
     if st.session_state['page'] == 'choose_restaurant':
         restaurants = get_restaurants()
-        with st.sidebar:
-            selected = option_menu("Main Menu", ["Login", 'Restuarants'], icons=['key', 'houses'], menu_icon="cast", default_index=1)
         choose_restaurant(restaurants)
