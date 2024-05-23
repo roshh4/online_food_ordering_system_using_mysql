@@ -4,18 +4,21 @@ import MySQLdb
 from streamlit_option_menu import option_menu
 from display_menu_items import display_menu_items  
 
-def insert_cart_info(connection, customer_id, restaurant_id, total_price=0):
+def update_cart_info(connection, restaurant_id, cart_id):
     try:
+        print("called")
         cursor = connection.cursor()
-        query = "INSERT INTO cart_info (customer_id, restaurant_id, total_price) VALUES (%s, %s, %s)"
-        cursor.execute(query, (customer_id, restaurant_id, total_price))
+        # cart_id = cursor.lastrowid
+        print(cart_id)
+        query = "UPDATE cart_info SET restaurant_id = %s WHERE cart_id = %s"
+        cursor.execute(query, (restaurant_id, cart_id))
         connection.commit()
-        st.success("Cart info inserted successfully")
+        st.success("Cart info updated successfully")
     except MySQLdb.Error as e:
         st.error(f"Error: '{e}'")
 
 # Function to choose a restaurant
-def choose_restaurant(restaurants):
+def choose_restaurant(connection, restaurants, cart_id):
     with st.sidebar:
         selected = option_menu("Restaurants", ["La Trattoria", "Sushi World","Taco Fiesta","Burger Haven","Dosa Delight"], icons=['house','house','house','house','house'], menu_icon="houses", default_index=0)
     
@@ -23,8 +26,10 @@ def choose_restaurant(restaurants):
 
     # Find the selected restaurant's image path
     image_path = None
+    selected_restaurant_id = None  # Initialize selected_restaurant_id
     for row in restaurants:
         if row[0] == selected:
+            selected_restaurant_id = row[2]  # Assuming restaurant_id is at index 2
             image_path = row[1]
             break
 
@@ -36,5 +41,7 @@ def choose_restaurant(restaurants):
     # Button to navigate to the menu_items page
     if st.button("View Menu Items"):
         st.session_state['selected_restaurant'] = selected
+        st.session_state['selected_restaurant_id'] = selected_restaurant_id
         st.session_state['page'] = 'display_menu_items' 
+        update_cart_info(connection, selected_restaurant_id, cart_id)        
         st.rerun()
