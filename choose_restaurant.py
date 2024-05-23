@@ -25,5 +25,5 @@ def choose_restaurant(restaurants):
     # Button to navigate to the menu_items page
     if st.button("View Menu Items"):
         st.session_state['selected_restaurant'] = selected
-        st.session_state['page'] = 'display_menu_items' # Redirect to menu_items page
+        st.session_state['page'] = 'display_menu_items' 
         st.rerun()

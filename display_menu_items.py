@@ -1,5 +1,6 @@
 import MySQLdb
 import streamlit as st
+from display_cart_details import display_cart_details
 
 
 def insert_cart(connection, customer_id, restaurant_id, total_price):
@@ -21,7 +22,9 @@ def display_menu_items(connection, selected_restaurant):
             st.session_state['page'] = 'choose_restaurant'
             st.rerun()
     with col3:
-        st.button("CART")
+        if st.button("CART"):
+            st.session_state['page'] = 'display_cart_details'
+            st.rerun()
     try:
         cursor = connection.cursor()
         
