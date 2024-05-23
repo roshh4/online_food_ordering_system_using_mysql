@@ -18,11 +18,21 @@ def display_menu_items(connection, selected_restaurant):
             cursor.execute("SELECT item_name, price FROM menu_items WHERE restaurant_id = %s", (restaurant_id,))
             menu_items = cursor.fetchall()
 
+            # Initialize cart in session state if not already initialized
+            if 'cart' not in st.session_state:
+                st.session_state['cart'] = []
+
             # Display menu items
             st.title(f"Menu Items for {selected_restaurant}")
             if menu_items:
                 for item in menu_items:
-                    st.write(f"Item Name: {item[0]}, Price: {item[1]}")
+                    item_name, item_price = item
+                    st.write(f"Item Name: {item_name}, Price: {item_price}")
+
+                    # Button to add item to cart
+                    if st.button("Add to cart",key=item_name):
+                        st.session_state['cart'].append((item_name, item_price))
+                        st.success(f"Added {item_name} to cart.")
             else:
                 st.write("No menu items found for this restaurant.")
         else:
