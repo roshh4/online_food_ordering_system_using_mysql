@@ -1,7 +1,18 @@
 import streamlit as st
 import os
+import MySQLdb
 from streamlit_option_menu import option_menu
 from display_menu_items import display_menu_items  
+
+def insert_cart_info(connection, customer_id, restaurant_id, total_price=0):
+    try:
+        cursor = connection.cursor()
+        query = "INSERT INTO cart_info (customer_id, restaurant_id, total_price) VALUES (%s, %s, %s)"
+        cursor.execute(query, (customer_id, restaurant_id, total_price))
+        connection.commit()
+        st.success("Cart info inserted successfully")
+    except MySQLdb.Error as e:
+        st.error(f"Error: '{e}'")
 
 # Function to choose a restaurant
 def choose_restaurant(restaurants):
