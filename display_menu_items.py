@@ -2,11 +2,11 @@ import MySQLdb
 import streamlit as st
 
 
-def insert_cart(connection, customer_name, contact_number, address, email):
+def insert_cart(connection, customer_id, restaurant_id, total_price):
     try:
         cursor = connection.cursor()
-        query = "INSERT INTO cart (customer_name, contact_number, address, email) VALUES (%s, %s, %s, %s)"
-        cursor.execute(query, (customer_name, contact_number, address, email))
+        query = "INSERT INTO cart_info(customer_id, restaurant_id, total_price) VALUES (%d, %d, %d, %f)"
+        cursor.execute(query, (customer_id, restaurant_id, total_price))
         connection.commit()
         st.success("Cart inserted successfully")
     except MySQLdb.Error as e:
@@ -14,6 +14,7 @@ def insert_cart(connection, customer_name, contact_number, address, email):
 
 # Function to display menu items for the selected restaurant
 def display_menu_items(connection, selected_restaurant):
+    
     col1, col2, col3 = st.columns([8,20,10])
     with col1:
         if st.button("back"):
@@ -45,14 +46,9 @@ def display_menu_items(connection, selected_restaurant):
                 for item in menu_items:
                     item_name, item_price = item
                     st.write(f"Item Name: {item_name}, Price: {item_price}")
-                    flag = False
-                    # Button to add item to cart
-                    if st.button('ADD',key=item_name):
-                        st.session_state['cart'].append((item_name, item_price))
-                        st.success(f"Added {item_name} to cart.")
-                        flag = True
-                    if flag:    
-                        st.button('REMOVE')
+                    
+                    st.number_input("Quantity: ",key=item_name,min_value=0,step=1)
+
             else:
                 st.write("No menu items found for this restaurant.")
         else:

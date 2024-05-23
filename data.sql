@@ -169,13 +169,6 @@ VALUES
     (100, 'Filter Coffee', 5, 'South Indian coffee brewed with dark roast coffee beans and served with milk and sugar', 60.00, TRUE, 'Beverages'),
     (101, 'Mango Lassi', 5, 'Refreshing yogurt-based drink flavored with ripe mango pulp', 70.00, TRUE, 'Beverages'),
     (102, 'Water', 5, 'Bottled drinking water', 20.00, TRUE, 'Beverages');
-CREATE TABLE cart (
-    cart_id INT PRIMARY KEY,
-    customer_id INT,
-    restaurant_id INT,
-    total_price DECIMAL(10, 2)
-);
-drop table cart;
 CREATE TABLE cart_info (
     cart_id INT PRIMARY KEY,
     customer_id INT,
