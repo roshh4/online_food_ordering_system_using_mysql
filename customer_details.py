@@ -10,9 +10,11 @@ def customer_details(conn, insert_customer):
     address = st.text_input("Address")
 
     if st.button("Submit"):
-        if not customer_name or not contact_number or not email:
-            st.error("Please fill in all fields.")
-        else:
+        
+        #WE CAN UNCOMMENT THIS LATER
+        #if not customer_name or not contact_number or not email:
+        #    st.error("Please fill in all fields.")
+        #else:
             # Pass the database connection to insert_customer
             insert_customer(conn, customer_name, contact_number, email, address)
             st.session_state['page'] = 'choose_restaurant'
