@@ -4,8 +4,6 @@ import MySQLdb
 def display_cart_details(connection):
     try:
         cursor = connection.cursor()
-        
-        # Assuming you have a 'cart' table with 'item_name', 'quantity', and 'price' columns
         cursor.execute("SELECT * FROM cart_info")
         cart_items = cursor.fetchall()
         
