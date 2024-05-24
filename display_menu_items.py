@@ -2,18 +2,18 @@ import MySQLdb
 import streamlit as st
 from display_cart_details import display_cart_details
 
-def get_info(connection):
-    try:
-        cursor = connection.cursor()
-        query = "SELECT customer_id FROM customer"
-        cursor.execute(query)
-        result = cursor.fetchall()
-    except MySQLdb.Error as e:
-        st.error(f"Error retrieving customer information: {e}")    
+# def update_cart(connection, quantity, item_price):
+#     try:
+#         cursor = connection.cursor()
+#         query = "UPDATE cart_items SET quantity = %s"
+#         cursor.execute(query, (quantity))
+#         connection.commit()
+#         st.success("Cart inserted successfully")
+#     except MySQLdb.Error as e:
+#         st.error(f"Error inserting cart: {e}")
 
 def insert_cart(connection, cart_id, item_id, quantity, initial_price):
     try:
-        print(1)
         cursor = connection.cursor()
         query = "INSERT INTO cart_items (cart_id, item_id, quantity, price) VALUES (%s, %s, %s, %s)"
         cursor.execute(query, (cart_id, item_id, quantity, initial_price))
