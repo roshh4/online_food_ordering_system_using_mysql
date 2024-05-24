@@ -1,4 +1,5 @@
 use sql12707743;
+
 CREATE TABLE cart_items_temp (
     cart_item_id INT PRIMARY KEY,
     total_price DECIMAL(10,2)
@@ -7,7 +8,7 @@ CREATE TABLE cart_items_temp (
 DELIMITER //
 
 CREATE TRIGGER update_total_price
-AFTER UPDATE ON cart_items
+BEFORE UPDATE ON cart_items
 FOR EACH ROW
 BEGIN
     DECLARE itemPrice DECIMAL(10,2);
@@ -20,6 +21,7 @@ BEGIN
 END //
 
 DELIMITER ;
+
 
 DELIMITER //
 
@@ -37,7 +39,4 @@ BEGIN
 END //
 
 DELIMITER ;
-
-
 show triggers;
-DROP TRIGGER update_total_price;
