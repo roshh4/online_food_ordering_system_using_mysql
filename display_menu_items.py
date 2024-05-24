@@ -2,21 +2,40 @@ import MySQLdb
 import streamlit as st
 from display_cart_details import display_cart_details
 
-def get_info(connection):
+def calculate_total_price(connection, item_id, quantity):
     try:
         cursor = connection.cursor()
-        query = "SELECT customer_id FROM customer"
-        cursor.execute(query)
-        result = cursor.fetchall()
+        query = "SELECT price FROM menu_items WHERE item_id = %s"
+        cursor.execute(query, (item_id,))
+        result = cursor.fetchone()
+        if result:
+            item_price = result[0]
+            return item_price * quantity
+        else:
+            st.error("Item price not found.")
+            return None
     except MySQLdb.Error as e:
-        st.error(f"Error retrieving customer information: {e}")    
+        st.error(f"Error calculating total price: {e}")
+        return None
+
+def update_cart(connection, cart_id, item_id, quantity):
+    try:
+        total_price = calculate_total_price(connection, item_id, quantity)
+        if total_price is not None:
+            cursor = connection.cursor()
+            query = "UPDATE cart_items SET quantity = %s, total_price = %s WHERE cart_id = %s AND item_id = %s"
+            cursor.execute(query, (quantity, total_price, cart_id, item_id))
+            connection.commit()
+            st.success("Cart updated successfully")
+    except MySQLdb.Error as e:
+        st.error(f"Error updating cart: {e}")
 
 def insert_cart(connection, cart_id, item_id, quantity, initial_price):
     try:
-        print(1)
         cursor = connection.cursor()
-        query = "INSERT INTO cart_items (cart_id, item_id, quantity, price) VALUES (%s, %s, %s, %s)"
-        cursor.execute(query, (cart_id, item_id, quantity, initial_price))
+        total_price = initial_price * quantity
+        query = "INSERT INTO cart_items (cart_id, item_id, quantity, total_price) VALUES (%s, %s, %s, %s)"
+        cursor.execute(query, (cart_id, item_id, quantity, total_price))
         connection.commit()
         st.success("Cart inserted successfully")
     except MySQLdb.Error as e:
@@ -62,7 +81,7 @@ def display_menu_items(connection, selected_restaurant, cart_id):
                     with container:
                         col1, col2, col3 = st.columns([30, 30, 10])
                         with col1:
-                            st.subheader(f"{item_name}",divider='rainbow')
+                            st.subheader(f"{item_name}", divider='rainbow')
                         with col3:
                             st.subheader(f"${item_price}", divider='rainbow')
                         st.write(f'{item_des}')
@@ -74,11 +93,14 @@ def display_menu_items(connection, selected_restaurant, cart_id):
 
                         # Add item to cart when quantity changes
                         if quantity > 0:
-                            item_in_cart = next((i for i in st.session_state['cart'] if i['item_name'] == item_name), None)
+                            item_in_cart = next((i for i in st.session_state['cart'] if i['item_id'] == item_id), None)
                             if item_in_cart:
-                                item_in_cart['quantity'] = quantity
+                                if item_in_cart['quantity'] != quantity:
+                                    item_in_cart['quantity'] = quantity
+                                    update_cart(connection, cart_id, item_id, quantity)
                             else:
                                 st.session_state['cart'].append({
+                                    'item_id': item_id,
                                     'item_name': item_name,
                                     'price': item_price,
                                     'quantity': quantity
@@ -86,7 +108,7 @@ def display_menu_items(connection, selected_restaurant, cart_id):
                                 insert_cart(connection, cart_id, item_id, quantity, item_price)
 
                         elif quantity == 0:
-                            st.session_state['cart'] = [i for i in st.session_state['cart'] if i['item_name'] != item_name]
+                            st.session_state['cart'] = [i for i in st.session_state['cart'] if i['item_id'] != item_id]
             else:
                 st.write("No menu items found for this restaurant.")
         else:
