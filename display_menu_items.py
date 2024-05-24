@@ -41,6 +41,16 @@ def insert_cart(connection, cart_id, item_id, quantity, initial_price):
     except MySQLdb.Error as e:
         st.error(f"Error inserting cart: {e}")
 
+def delete_item_from_cart(connection, cart_item_id):
+    try:
+        cursor = connection.cursor()
+        query = "DELETE FROM cart_items WHERE cart_item_id = %s"
+        cursor.execute(query, (cart_item_id,))
+        connection.commit()
+        st.success("Item deleted from cart successfully")
+    except MySQLdb.Error as e:
+        st.error(f"Error deleting item from cart: {e}")
+
 # Function to display menu items for the selected restaurant
 def display_menu_items(connection, selected_restaurant, cart_id):
     col1, col2, col3 = st.columns([8, 20, 10])
@@ -108,7 +118,15 @@ def display_menu_items(connection, selected_restaurant, cart_id):
                                 insert_cart(connection, cart_id, item_id, quantity, item_price)
 
                         elif quantity == 0:
-                            st.session_state['cart'] = [i for i in st.session_state['cart'] if i['item_id'] != item_id]
+                            # Query cart_items to get the cart_item_id
+                            cursor.execute("SELECT cart_item_id FROM cart_items WHERE cart_id = %s AND item_id = %s", (cart_id, item_id))
+                            result = cursor.fetchone()
+                            if result:
+                                cart_item_id = result[0]
+                                # Delete item from cart
+                                delete_item_from_cart(connection, cart_item_id)
+                                st.session_state['cart'] = [i for i in st.session_state['cart'] if i['item_id'] != item_id]
+
             else:
                 st.write("No menu items found for this restaurant.")
         else:
