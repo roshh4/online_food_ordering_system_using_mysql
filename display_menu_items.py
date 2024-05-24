@@ -60,11 +60,12 @@ def display_menu_items(connection, selected_restaurant):
                     conatiner = st.container(height=250)
                     with conatiner:
                         item_name, item_price, item_des, item_veg = item
-                        col1, col2, col3 = st.columns([30,30,10])
+                        col1, col2, col3 = st.columns([30,22,10])
                         with col1:
-                            st.subheader(f"{item_name}")
+                            st.subheader(f"{item_name}",divider='rainbow')
                         with col3:
-                            st.subheader(f"{item_price}",divider='rainbow')
+                            st.subheader(f"₹{item_price}",divider='rainbow')
+                        #st.divider()    
                         
                         st.write(f'{item_des}')
                         if item_veg==1:
