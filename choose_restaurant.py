@@ -24,7 +24,7 @@ def choose_restaurant(connection, restaurants, cart_id):
     
     st.title(selected)
 
-    # Find the selected restaurant's image path and restaurant_id
+    # to find image path
     image_path = None
     selected_restaurant_id = None  
     for row in restaurants:
@@ -38,7 +38,7 @@ def choose_restaurant(connection, restaurants, cart_id):
     else:
         st.error(f"Image not found for {selected}")
 
-    # Button to navigate to the menu_items page
+    # button for view menu items
     if st.button("View Menu Items"):
         st.session_state['selected_restaurant'] = selected
         st.session_state['selected_restaurant_id'] = selected_restaurant_id
