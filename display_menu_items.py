@@ -2,6 +2,16 @@ import MySQLdb
 import streamlit as st
 from display_cart_details import display_cart_details
 
+def get_info(connection):
+    try:
+        cursor = connection.cursor()
+        query = "SELECT customer_id FROM customer"
+        cursor.execute(query)
+        result = cursor.fetchall()
+
+    except MySQLdb.Error as e:
+        st.error(f"Error retrieving menu items: {e}")    
+
 
 def insert_cart(connection, customer_id, restaurant_id, total_price):
     try:
@@ -37,7 +47,7 @@ def display_menu_items(connection, selected_restaurant):
             restaurant_id = result[0]
 
             # Query menu items for the selected restaurant_id
-            cursor.execute("SELECT item_name, price, Description FROM menu_items WHERE restaurant_id = %s", (restaurant_id,))
+            cursor.execute("SELECT item_name, price, Description,is_veg FROM menu_items WHERE restaurant_id = %s", (restaurant_id,))
             menu_items = cursor.fetchall()
 
             # Initialize cart in session state if not already initialized
@@ -47,11 +57,15 @@ def display_menu_items(connection, selected_restaurant):
             st.title(f"Menu Items for {selected_restaurant}")
             if menu_items:
                 for item in menu_items:
-                    conatiner = st.container(height=200)
+                    conatiner = st.container(height=250)
                     with conatiner:
-                        item_name, item_price, item_des = item
+                        item_name, item_price, item_des, item_veg = item
                         st.subheader(f"Item Name: {item_name}, Price: {item_price}",divider='rainbow')
                         st.write(f'{item_des}')
+                        if item_veg==1:
+                            st.caption(':green_heart:')
+                        else:
+                            st.caption(":heart:")
                         st.number_input("Quantity: ",key=item_name,min_value=0,step=1)
 
             else:
