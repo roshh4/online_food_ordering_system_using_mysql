@@ -51,6 +51,6 @@ if conn:
             st.session_state['page'] = 'display_menu_items'
 
     elif st.session_state['page'] == 'display_menu_items':
-        display_menu_items(conn, st.session_state['selected_restaurant'])
+        display_menu_items(conn, st.session_state['selected_restaurant'],st.session_state['cart_id'])
     elif st.session_state['page'] == 'display_cart_details':  
         display_cart_details(conn)
