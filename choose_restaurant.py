@@ -29,7 +29,7 @@ def choose_restaurant(connection, restaurants, cart_id):
     selected_restaurant_id = None  
     for row in restaurants:
         if row[0] == selected:
-            selected_restaurant_id = row[2]  
+            selected_restaurant_id = row[2]
             image_path = row[1]
             break
 
