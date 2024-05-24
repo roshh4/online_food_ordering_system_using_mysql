@@ -9,7 +9,7 @@ def display_cart_details(connection):
         
         if st.button("back"):
             st.session_state['page'] = 'display_menu_items'
-            st.rerun()
+            st.rerun() 
 
         st.title("Cart Details")
         if cart_items:

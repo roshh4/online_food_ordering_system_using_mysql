@@ -60,7 +60,12 @@ def display_menu_items(connection, selected_restaurant):
                     conatiner = st.container(height=250)
                     with conatiner:
                         item_name, item_price, item_des, item_veg = item
-                        st.subheader(f"Item Name: {item_name}, Price: {item_price}",divider='rainbow')
+                        col1, col2, col3 = st.columns([30,30,10])
+                        with col1:
+                            st.subheader(f"{item_name}")
+                        with col3:
+                            st.subheader(f"{item_price}",divider='rainbow')
+                        
                         st.write(f'{item_des}')
                         if item_veg==1:
                             st.caption(':green_heart:')
