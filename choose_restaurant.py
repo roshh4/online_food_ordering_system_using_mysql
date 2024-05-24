@@ -42,6 +42,6 @@ def choose_restaurant(connection, restaurants, cart_id):
     if st.button("View Menu Items"):
         st.session_state['selected_restaurant'] = selected
         st.session_state['selected_restaurant_id'] = selected_restaurant_id
-        st.session_state['page'] = 'display_menu_items' 
+        st.session_state['page'] = 'display_menu_items'
         update_cart_info(connection, selected_restaurant_id, cart_id)        
         st.rerun()
