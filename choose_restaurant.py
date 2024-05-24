@@ -4,11 +4,11 @@ import MySQLdb
 from streamlit_option_menu import option_menu
 from display_menu_items import display_menu_items  
 
+#function to update cart_info with restaurant_id
 def update_cart_info(connection, restaurant_id, cart_id):
     try:
         print("called")
         cursor = connection.cursor()
-        # cart_id = cursor.lastrowid
         print(cart_id)
         query = "UPDATE cart_info SET restaurant_id = %s WHERE cart_id = %s"
         cursor.execute(query, (restaurant_id, cart_id))
@@ -24,12 +24,12 @@ def choose_restaurant(connection, restaurants, cart_id):
     
     st.title(selected)
 
-    # Find the selected restaurant's image path
+    # Find the selected restaurant's image path and restaurant_id
     image_path = None
-    selected_restaurant_id = None  # Initialize selected_restaurant_id
+    selected_restaurant_id = None  
     for row in restaurants:
         if row[0] == selected:
-            selected_restaurant_id = row[2]  # Assuming restaurant_id is at index 2
+            selected_restaurant_id = row[2]  
             image_path = row[1]
             break
 
@@ -42,6 +42,6 @@ def choose_restaurant(connection, restaurants, cart_id):
     if st.button("View Menu Items"):
         st.session_state['selected_restaurant'] = selected
         st.session_state['selected_restaurant_id'] = selected_restaurant_id
-        st.session_state['page'] = 'display_menu_items' 
+        st.session_state['page'] = 'display_menu_items'
         update_cart_info(connection, selected_restaurant_id, cart_id)        
         st.rerun()
