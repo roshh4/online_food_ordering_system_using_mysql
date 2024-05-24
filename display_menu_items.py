@@ -1,35 +1,10 @@
 import MySQLdb
 import streamlit as st
-from display_cart_details import display_cart_details
+from update_cart import update_cart
+from delete_item_from_cart import delete_item_from_cart
 
-def calculate_total_price(connection, item_id, quantity):
-    try:
-        cursor = connection.cursor()
-        query = "SELECT price FROM menu_items WHERE item_id = %s"
-        cursor.execute(query, (item_id,))
-        result = cursor.fetchone()
-        if result:
-            item_price = result[0]
-            return item_price * quantity
-        else:
-            st.error("Item price not found.")
-            return None
-    except MySQLdb.Error as e:
-        st.error(f"Error calculating total price: {e}")
-        return None
 
-def update_cart(connection, cart_id, item_id, quantity):
-    try:
-        total_price = calculate_total_price(connection, item_id, quantity)
-        if total_price is not None:
-            cursor = connection.cursor()
-            query = "UPDATE cart_items SET quantity = %s, total_price = %s WHERE cart_id = %s AND item_id = %s"
-            cursor.execute(query, (quantity, total_price, cart_id, item_id))
-            connection.commit()
-            st.success("Cart updated successfully")
-    except MySQLdb.Error as e:
-        st.error(f"Error updating cart: {e}")
-
+#function to insert item into cart_items
 def insert_cart(connection, cart_id, item_id, quantity, initial_price):
     try:
         cursor = connection.cursor()
@@ -41,15 +16,7 @@ def insert_cart(connection, cart_id, item_id, quantity, initial_price):
     except MySQLdb.Error as e:
         st.error(f"Error inserting cart: {e}")
 
-def delete_item_from_cart(connection, cart_item_id):
-    try:
-        cursor = connection.cursor()
-        query = "DELETE FROM cart_items WHERE cart_item_id = %s"
-        cursor.execute(query, (cart_item_id,))
-        connection.commit()
-        st.success("Item deleted from cart successfully")
-    except MySQLdb.Error as e:
-        st.error(f"Error deleting item from cart: {e}")
+
 
 # Function to display menu items for the selected restaurant
 def display_menu_items(connection, selected_restaurant, cart_id):

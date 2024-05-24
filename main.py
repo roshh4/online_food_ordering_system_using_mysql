@@ -19,7 +19,6 @@ def insert_customer(connection, customer_name, contact_number, address, email):
         st.session_state['cart_id'] = cart_id
         connection.commit()
         st.success("Customer inserted successfully")
-        # print(cart_id)
     except MySQLdb.Error as e:
         st.error(f"Error: '{e}'")
 

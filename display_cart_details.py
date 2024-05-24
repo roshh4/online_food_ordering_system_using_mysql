@@ -1,6 +1,7 @@
 import streamlit as st
 import MySQLdb
 
+#function to define cart details
 def display_cart_details(connection):
     try:
         cursor = connection.cursor()
