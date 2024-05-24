@@ -1,11 +1,13 @@
-use food_court;
+use sql12707743;
+show tables;
+desc cart_items;
 create table restaurants (restaurant_id INT(2) PRIMARY KEY, restaurant_name varchar(30), cuisine varchar(30), category varchar(30));
 INSERT INTO restaurants (restaurant_id, restaurant_name, cuisine, category) VALUES (1, 'La Trattoria', 'Italian', 'Casual Dining');
 INSERT INTO restaurants (restaurant_id, restaurant_name, cuisine, category) VALUES (2, 'Sushi World', 'Japanese', 'Fine Dining');
 INSERT INTO restaurants (restaurant_id, restaurant_name, cuisine, category) VALUES (3, 'Taco Fiesta', 'Mexican', 'Fast Food');
 INSERT INTO restaurants (restaurant_id, restaurant_name, cuisine, category) VALUES (4, 'Burger Haven', 'American', 'Fast Food');
 INSERT INTO restaurants (restaurant_id, restaurant_name, cuisine, category) VALUES (5, 'Dosa Delight', 'South Indian', 'Casual Dining');
-CREATE TABLE Customer (
+CREATE TABLE customer (
     Customer_id INT AUTO_INCREMENT PRIMARY KEY,
     Customer_name VARCHAR(30),
     Contact_Number VARCHAR(30),
@@ -170,7 +172,7 @@ VALUES
     (101, 'Mango Lassi', 5, 'Refreshing yogurt-based drink flavored with ripe mango pulp', 70.00, TRUE, 'Beverages'),
     (102, 'Water', 5, 'Bottled drinking water', 20.00, TRUE, 'Beverages');
 CREATE TABLE cart_info (
-    cart_id INT PRIMARY KEY,
+    cart_id INT AUTO_INCREMENT PRIMARY KEY,
     customer_id INT,
     restaurant_id INT,
     total_price DECIMAL(10, 2),
@@ -178,13 +180,15 @@ CREATE TABLE cart_info (
     FOREIGN KEY (restaurant_id) REFERENCES restaurants(restaurant_id)
 );
 CREATE TABLE cart_items (
-    cart_item_id INT PRIMARY KEY,
+    cart_item_id INT auto_increment PRIMARY KEY,
     cart_id INT,
     item_id INT,
     quantity INT,
+    total_price DECIMAL(10,2),
     FOREIGN KEY (cart_id) REFERENCES cart_info(cart_id),
     FOREIGN KEY (item_id) REFERENCES menu_items(item_id)
 );
+desc bill;
 CREATE TABLE bill (
     bill_id INT PRIMARY KEY,
     cart_id INT UNIQUE,
