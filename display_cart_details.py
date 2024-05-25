@@ -88,6 +88,17 @@ def display_cart_details(connection, cart_id):
                     updated_total_price_per_item = total_price_result[0]
                     st.write(f"Price: {updated_total_price_per_item}")
 
+                # delete button
+                if st.button(f"Delete {item_name} from cart", key=f"delete_{item_id}"):
+                    cursor.execute("SELECT cart_item_id FROM cart_items WHERE cart_id = %s AND item_id = %s",
+                                   (cart_id, item_id))
+                    result = cursor.fetchone()
+                    if result:
+                        cart_item_id = result[0]
+                        delete_item_from_cart(connection, cart_item_id)
+                        st.session_state['cart'] = [i for i in st.session_state['cart'] if i['item_id'] != item_id]
+                        st.experimental_rerun()
+
             # Fetching total price from cart_info table after updating quantity
             query = "SELECT total_price FROM cart_info WHERE cart_id = %s"
             cursor.execute(query, (cart_id,))
