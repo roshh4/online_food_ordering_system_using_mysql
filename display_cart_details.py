@@ -86,7 +86,7 @@ def display_cart_details(connection, cart_id):
 
                 if total_price_result:
                     updated_total_price_per_item = total_price_result[0]
-                    st.write(f"Updated Price for {item_name}: {updated_total_price_per_item}")
+                    st.write(f"Price: {updated_total_price_per_item}")
 
             # Fetching total price from cart_info table after updating quantity
             query = "SELECT total_price FROM cart_info WHERE cart_id = %s"
