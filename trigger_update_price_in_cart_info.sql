@@ -5,13 +5,11 @@ AFTER INSERT ON cart_items
 FOR EACH ROW
 BEGIN
     DECLARE new_total_price DECIMAL(10, 2);
-    
-    -- Calculate the new total price for the cart
+
     SELECT SUM(total_price) INTO new_total_price
     FROM cart_items
     WHERE cart_id = NEW.cart_id;
-    
-    -- Update the total price in the cart_info table
+
     UPDATE cart_info
     SET total_price = new_total_price
     WHERE cart_id = NEW.cart_id;
@@ -23,12 +21,10 @@ FOR EACH ROW
 BEGIN
     DECLARE new_total_price DECIMAL(10, 2);
     
-    -- Calculate the new total price for the cart
     SELECT SUM(total_price) INTO new_total_price
     FROM cart_items
     WHERE cart_id = NEW.cart_id;
     
-    -- Update the total price in the cart_info table
     UPDATE cart_info
     SET total_price = new_total_price
     WHERE cart_id = NEW.cart_id;
@@ -40,12 +36,10 @@ FOR EACH ROW
 BEGIN
     DECLARE new_total_price DECIMAL(10, 2);
     
-    -- Calculate the new total price for the cart
     SELECT SUM(total_price) INTO new_total_price
     FROM cart_items
     WHERE cart_id = OLD.cart_id;
     
-    -- Update the total price in the cart_info table
     UPDATE cart_info
     SET total_price = new_total_price
     WHERE cart_id = OLD.cart_id;

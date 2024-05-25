@@ -190,7 +190,7 @@ CREATE TABLE cart_items (
 );
 desc bill;
 CREATE TABLE bill (
-    bill_id INT PRIMARY KEY,
+    bill_id INT auto_increment PRIMARY KEY,
     cart_id INT UNIQUE,
     customer_id INT,
     amount DECIMAL(10, 2),
