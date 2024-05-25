@@ -5,11 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="16715561-6619-4e99-a4ea-f97bade93ef1" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data.sql" beforeDir="false" afterPath="$PROJECT_DIR$/data.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/display_cart_details.py" beforeDir="false" afterPath="$PROJECT_DIR$/display_cart_details.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/trigger_update_price_in_cart_info.sql" beforeDir="false" afterPath="$PROJECT_DIR$/trigger_update_price_in_cart_info.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/trigger_update_price_in_cart_items.sql" beforeDir="false" afterPath="$PROJECT_DIR$/trigger_update_price_in_cart_items.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

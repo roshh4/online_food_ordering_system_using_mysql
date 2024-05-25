@@ -22,7 +22,7 @@ def display_cart_details(connection, cart_id):
 
         st.title("Cart Details")
         if cart_items:
-            # Initialize session state for cart items if not already done
+            # Initialize session state for cart items
             if 'cart_quantities' not in st.session_state:
                 st.session_state.cart_quantities = {}
                 st.session_state.cart = []
@@ -39,7 +39,7 @@ def display_cart_details(connection, cart_id):
                     item_name = "Unknown"
                     item_price = 0
 
-                # Initialize the quantity in session state if not already done
+                # Initialize the quantity in session state
                 if item_id not in st.session_state.cart_quantities:
                     st.session_state.cart_quantities[item_id] = quantity
 
@@ -52,8 +52,6 @@ def display_cart_details(connection, cart_id):
                     key=f"quantity_{item_id}",
                     value=st.session_state.cart_quantities[item_id]
                 )
-
-                updated_total_price_per_item = item_price * current_quantity
 
                 # Update session state with current quantity
                 st.session_state.cart_quantities[item_id] = current_quantity
@@ -73,18 +71,24 @@ def display_cart_details(connection, cart_id):
                         })
 
                 elif current_quantity == 0:
-                    # Query cart_items to get the cart_item_id
+                    # getting cart_item_id based on cart_id
                     cursor.execute("SELECT cart_item_id FROM cart_items WHERE cart_id = %s AND item_id = %s",
                                    (cart_id, item_id))
                     result = cursor.fetchone()
                     if result:
                         cart_item_id = result[0]
-                        # Delete item from cart
                         delete_item_from_cart(connection, cart_item_id)
                         st.session_state['cart'] = [i for i in st.session_state['cart'] if i['item_id'] != item_id]
 
-                st.write(f"Price: {updated_total_price_per_item}")
+                # Fetch updated total price per item from the database
+                cursor.execute("SELECT total_price FROM cart_items WHERE cart_id = %s AND item_id = %s", (cart_id, item_id))
+                total_price_result = cursor.fetchone()
 
+                if total_price_result:
+                    updated_total_price_per_item = total_price_result[0]
+                    st.write(f"Updated Price for {item_name}: {updated_total_price_per_item}")
+
+            # Fetching total price from cart_info table after updating quantity
             query = "SELECT total_price FROM cart_info WHERE cart_id = %s"
             cursor.execute(query, (cart_id,))
             total_price_result = cursor.fetchone()
@@ -93,5 +97,7 @@ def display_cart_details(connection, cart_id):
                 total_price = total_price_result[0]
                 st.write(f"Total Price: {total_price}")
 
+        else:
+            st.write("Your cart is empty.")
     except MySQLdb.Error as e:
         st.error(f"Error retrieving cart details: {e}")
