@@ -60,7 +60,7 @@ def display_menu_items(connection, selected_restaurant, cart_id):
                         with col1:
                             st.subheader(f"{item_name}", divider='rainbow')
                         with col3:
-                            st.subheader(f"${item_price}", divider='rainbow')
+                            st.subheader(f"Rs.{item_price}", divider='rainbow')
                         st.write(f'{item_des}')
                         if item_veg == 1:
                             st.caption(':green_heart:')
