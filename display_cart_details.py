@@ -53,8 +53,6 @@ def display_cart_details(connection, cart_id):
                     value=st.session_state.cart_quantities[item_id]
                 )
 
-                updated_total_price_per_item = item_price * current_quantity
-
                 # Update session state with current quantity
                 st.session_state.cart_quantities[item_id] = current_quantity
 
@@ -83,8 +81,15 @@ def display_cart_details(connection, cart_id):
                         delete_item_from_cart(connection, cart_item_id)
                         st.session_state['cart'] = [i for i in st.session_state['cart'] if i['item_id'] != item_id]
 
-                st.write(f"Price: {updated_total_price_per_item}")
+                # Fetch updated total price per item from the database
+                cursor.execute("SELECT total_price FROM cart_items WHERE cart_id = %s AND item_id = %s", (cart_id, item_id))
+                total_price_result = cursor.fetchone()
 
+                if total_price_result:
+                    updated_total_price_per_item = total_price_result[0]
+                    st.write(f"Updated Price for {item_name}: {updated_total_price_per_item}")
+
+            # Fetch the total price from cart_info table after updates
             query = "SELECT total_price FROM cart_info WHERE cart_id = %s"
             cursor.execute(query, (cart_id,))
             total_price_result = cursor.fetchone()
@@ -92,6 +97,25 @@ def display_cart_details(connection, cart_id):
             if total_price_result:
                 total_price = total_price_result[0]
                 st.write(f"Total Price: {total_price}")
-
+            else:
+                st.write("Total Price not found.")
+        else:
+            st.write("Your cart is empty.")
     except MySQLdb.Error as e:
         st.error(f"Error retrieving cart details: {e}")
+
+# Example usage
+if __name__ == "__main__":
+    # Connect to MySQL database (update connection parameters as needed)
+    connection = MySQLdb.connect(
+        host="your_host",
+        user="your_username",
+        password="your_password",
+        database="your_database"
+    )
+
+    # Replace this with the actual cart_id from your application context
+    cart_id = st.session_state.get('cart_id', 1)
+
+    display_cart_details(connection, cart_id)
+    connection.close()
