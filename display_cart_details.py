@@ -108,6 +108,10 @@ def display_cart_details(connection, cart_id):
                 total_price = total_price_result[0]
                 st.write(f"Total Price: {total_price}")
 
+            if st.button("place order"):
+                st.session_state['page'] = 'bill'
+                st.rerun()
+
         else:
             st.write("Your cart is empty.")
     except MySQLdb.Error as e:

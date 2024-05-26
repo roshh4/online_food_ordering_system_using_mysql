@@ -4,7 +4,8 @@ import streamlit as st
 from customer_details import customer_details
 from choose_restaurant import choose_restaurant
 from display_menu_items import display_menu_items
-from display_cart_details import display_cart_details  
+from display_cart_details import display_cart_details
+from bill import display_bill
 
 # Function to insert customer details into the database
 def insert_customer(connection, customer_name, contact_number, address, email):
@@ -53,3 +54,5 @@ if conn:
         display_menu_items(conn, st.session_state['selected_restaurant'],st.session_state['cart_id'])
     elif st.session_state['page'] == 'display_cart_details':  
         display_cart_details(conn,st.session_state['cart_id'])
+    elif st.session_state['page'] == 'bill':
+        display_bill(conn,st.session_state['cart_id'])
