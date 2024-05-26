@@ -3,8 +3,8 @@ import MySQLdb
 from update_cart import update_cart
 from delete_item_from_cart import delete_item_from_cart
 
-
 def insert_bill(conn, cart_id):
+    print(2)
     try:
         cursor = conn.cursor()
 
@@ -19,8 +19,16 @@ def insert_bill(conn, cart_id):
             # Insert these details into the bill table
             insert_query = "INSERT INTO bill (cart_id, customer_id, amount) VALUES (%s, %s, %s)"
             cursor.execute(insert_query, (cart_id, customer_id, total_price))
+            bill_id = cursor.lastrowid
+            cursor.callproc('calculate_gst', (total_price, bill_id))
+            cursor.callproc('calculate_service_charge', (total_price, bill_id))
+            query = "SELECT amount, cgst, sgst, service_charge from bill where bill_id = %s"
+            cursor.execute(query, (bill_id,))
+            calc = cursor.fetchone()
+            amount, cgst, sgst, service_charge = calc
+            print(calc)
+            cursor.callproc('calculate_final_amount', (total_price, amount, cgst, sgst, service_charge))
             conn.commit()
-            st.success("Bill inserted successfully!")
         else:
             st.error("Cart not found.")
 
@@ -63,7 +71,7 @@ def display_cart_details(connection, cart_id):
                     item_name = "Unknown"
                     item_price = 0
 
-                # Initialize the quantity in session state
+                # Initialize session state for quantity
                 if item_id not in st.session_state.cart_quantities:
                     st.session_state.cart_quantities[item_id] = quantity
 
@@ -133,6 +141,7 @@ def display_cart_details(connection, cart_id):
                 st.write(f"Total Price: {total_price}")
 
             if st.button("place order"):
+                print(1)
                 insert_bill(connection,cart_id)
                 st.session_state['page'] = 'bill'
                 st.rerun()
