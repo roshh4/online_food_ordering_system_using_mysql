@@ -10,7 +10,6 @@ def customer_details(conn, insert_customer):
 
     if st.button("Submit"):
         
-        #WE CAN UNCOMMENT THIS LATER
         #if not customer_name or not contact_number or not email:
         #    st.error("Please fill in all fields.")
         #else:

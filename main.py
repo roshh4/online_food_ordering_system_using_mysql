@@ -36,6 +36,7 @@ def get_restaurants():
         st.error(f"Error retrieving restaurant names: {e}")
     return restaurants
 
+#page navigation via session state
 if conn:
     if 'page' not in st.session_state:
         st.session_state['page'] = 'customer_details'

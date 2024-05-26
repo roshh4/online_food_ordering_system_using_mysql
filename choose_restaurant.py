@@ -2,7 +2,6 @@ import streamlit as st
 import os
 import MySQLdb
 from streamlit_option_menu import option_menu
-from display_menu_items import display_menu_items  
 
 #function to update cart_info with restaurant_id
 def update_cart_info(connection, restaurant_id, cart_id):
