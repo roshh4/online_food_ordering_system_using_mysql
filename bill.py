@@ -26,6 +26,7 @@ def display_bill(connection, cart_id):
                 st.write(f"CGST: {bill[3]}")
                 st.write(f"SGST: {bill[4]}")
                 st.write(f"Service Charge: {bill[5]}")
+                st.write(f"quantity: {bill[6]}")
                 st.write("---")
         else:
             st.write("No bills found.")

@@ -39,20 +39,36 @@ DELIMITER ;
 DELIMITER //
 
 CREATE PROCEDURE calculate_final_amount(
-	IN amount DECIMAL(10, 2),
-	IN cgst DECIMAL(10, 2),
-	IN sgst DECIMAL(10, 2),
-	IN service_charge DECIMAL(5, 2),
-	IN bill_id INT  
+    IN amount DECIMAL(10, 2),
+    IN cgst DECIMAL(5, 2),
+    IN sgst DECIMAL(5, 2),
+    IN service_charge DECIMAL(5, 2),
+    IN bill_id_q INT
 )
 BEGIN
-	DECLARE final_amount DECIMAL(10, 2);
-	SET final_amount = amount + cgst + sgst + service_charge;
+    DECLARE final_amount DECIMAL(10, 2);
+    SET final_amount = amount + cgst + sgst + service_charge;
 
-	UPDATE bill
-	SET final_amount = final_amount
-	WHERE bill_id = bill_id;
+    UPDATE bill
+    SET final_amount = final_amount
+    WHERE bill_id = bill_id_q;
 END //
 
 DELIMITER ;
 
+DELIMITER //
+
+CREATE PROCEDURE calculate_total_quantity(IN p_cart_id INT)
+BEGIN
+	DECLARE total_quantity INT;
+    
+    SELECT SUM(quantity) INTO total_quantity
+    FROM cart_items
+    WHERE cart_id = p_cart_id;
+    
+    update bill
+    set total_quantity = total_quantity
+    where cart_id = p_cart_id;
+END //
+
+DELIMITER ;
