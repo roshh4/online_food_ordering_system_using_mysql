@@ -8,6 +8,5 @@ def delete_item_from_cart(connection, cart_item_id):
         query = "DELETE FROM cart_items WHERE cart_item_id = %s"
         cursor.execute(query, (cart_item_id,))
         connection.commit()
-        st.success("Item deleted from cart successfully")
     except MySQLdb.Error as e:
         st.error(f"Error deleting item from cart: {e}")
