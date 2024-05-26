@@ -3,6 +3,30 @@ import MySQLdb
 from update_cart import update_cart
 from delete_item_from_cart import delete_item_from_cart
 
+
+def insert_bill(conn, cart_id):
+    try:
+        cursor = conn.cursor()
+
+        # Fetch the cart_id, customer_id, and total_price from cart_info
+        select_query = "SELECT cart_id, customer_id, total_price FROM cart_info WHERE cart_id = %s"
+        cursor.execute(select_query, (cart_id,))
+        result = cursor.fetchone()
+
+        if result:
+            cart_id, customer_id, total_price = result
+
+            # Insert these details into the bill table
+            insert_query = "INSERT INTO bill (cart_id, customer_id, amount) VALUES (%s, %s, %s)"
+            cursor.execute(insert_query, (cart_id, customer_id, total_price))
+            conn.commit()
+            st.success("Bill inserted successfully!")
+        else:
+            st.error("Cart not found.")
+
+    except MySQLdb.Error as e:
+        st.error(f"Error: '{e}'")
+
 # Function to display cart details
 def display_cart_details(connection, cart_id):
     try:
@@ -109,6 +133,7 @@ def display_cart_details(connection, cart_id):
                 st.write(f"Total Price: {total_price}")
 
             if st.button("place order"):
+                insert_bill(connection,cart_id)
                 st.session_state['page'] = 'bill'
                 st.rerun()
 
