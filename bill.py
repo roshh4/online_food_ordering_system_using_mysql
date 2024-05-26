@@ -28,6 +28,18 @@ def display_bill(connection, cart_id):
                 st.write(f"Service Charge: {bill[5]}")
                 st.write(f"quantity: {bill[6]}")
                 st.write("---")
+
+            query = "SELECT item_id, quantity, total_price FROM cart_items WHERE cart_id = %s"
+            cursor.execute(query, (cart_id,))
+            cart_items = cursor.fetchall()
+            for item in cart_items:
+                query = "SELECT item_name FROM menu_items WHERE item_id = %s"
+                cursor.execute(query, (item[0],))
+                name = cursor.fetchone()
+                st.write(f"item name : {name}")
+                st.write(f"quantity: {item[1]}")
+                st.write(f"Total price: {item[2]}")
+
         else:
             st.write("No bills found.")
 

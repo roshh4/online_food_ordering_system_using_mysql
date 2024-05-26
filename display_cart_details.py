@@ -27,7 +27,7 @@ def insert_bill(conn, cart_id):
             calc = cursor.fetchone()
             amount, cgst, sgst, service_charge = calc
             print(calc)
-            cursor.callproc('calculate_final_amount', (total_price, amount, cgst, sgst, service_charge))
+            cursor.callproc('calculate_final_amount', (amount, cgst, sgst, service_charge, bill_id))
             cursor.callproc('calculate_total_quantity', [cart_id])
             conn.commit()
         else:
