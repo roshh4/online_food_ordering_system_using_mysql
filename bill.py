@@ -6,12 +6,12 @@ def display_bill(connection, cart_id):
     try:
         cursor = connection.cursor()
 
-        # Fetching all rows from the bill table for the specified cart_id
+        #
         query = """
-            SELECT bill_id, cart_id, final_amount, cgst, sgst, service_charge, total_quantity 
-            FROM bill 
-            WHERE cart_id = %s
-        """
+                SELECT bill_id, cart_id, final_amount, cgst, sgst, service_charge, total_quantity 
+                FROM bill 
+                WHERE cart_id = %s
+                """
         cursor.execute(query, (cart_id,))
         bills = cursor.fetchall()
 

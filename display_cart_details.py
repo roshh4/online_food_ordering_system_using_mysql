@@ -8,7 +8,7 @@ def insert_bill(conn, cart_id):
     try:
         cursor = conn.cursor()
 
-        # Fetch the cart_id, customer_id, and total_price from cart_info
+        #Fetching cart_id, customer_id, and total_price from cart_info
         select_query = "SELECT cart_id, customer_id, total_price FROM cart_info WHERE cart_id = %s"
         cursor.execute(select_query, (cart_id,))
         result = cursor.fetchone()
@@ -16,18 +16,25 @@ def insert_bill(conn, cart_id):
         if result:
             cart_id, customer_id, total_price = result
 
-            # Insert these details into the bill table
+            #Inserting details into the bill table
             insert_query = "INSERT INTO bill (cart_id, customer_id, amount) VALUES (%s, %s, %s)"
             cursor.execute(insert_query, (cart_id, customer_id, total_price))
             bill_id = cursor.lastrowid
+
+            #Calling procedure to calculate gst
             cursor.callproc('calculate_gst', (total_price, bill_id))
+
+            #Calling procedure to calculate service charge
             cursor.callproc('calculate_service_charge', (total_price, bill_id))
+
+            #Calling procedure to calculate final amount
             query = "SELECT amount, cgst, sgst, service_charge from bill where bill_id = %s"
             cursor.execute(query, (bill_id,))
             calc = cursor.fetchone()
             amount, cgst, sgst, service_charge = calc
-            print(calc)
             cursor.callproc('calculate_final_amount', (amount, cgst, sgst, service_charge, bill_id))
+
+            #Calling procedure to calculate total quantity
             cursor.callproc('calculate_total_quantity', [cart_id])
             conn.commit()
         else:
@@ -36,7 +43,7 @@ def insert_bill(conn, cart_id):
     except MySQLdb.Error as e:
         st.error(f"Error: '{e}'")
 
-# Function to display cart details
+#Function to display cart details
 def display_cart_details(connection, cart_id):
     try:
         cursor = connection.cursor()
@@ -55,7 +62,7 @@ def display_cart_details(connection, cart_id):
 
         st.title("Cart Details")
         if cart_items:
-            # Initialize session state for cart items
+            #Initialize session state for cart items
             if 'cart_quantities' not in st.session_state:
                 st.session_state.cart_quantities = {}
                 st.session_state.cart = []
@@ -72,7 +79,7 @@ def display_cart_details(connection, cart_id):
                     item_name = "Unknown"
                     item_price = 0
 
-                # Initialize session state for quantity
+                #Initialize session state for quantity
                 if item_id not in st.session_state.cart_quantities:
                     st.session_state.cart_quantities[item_id] = quantity
 
@@ -121,7 +128,7 @@ def display_cart_details(connection, cart_id):
                     updated_total_price_per_item = total_price_result[0]
                     st.write(f"Price: {updated_total_price_per_item}")
 
-                # delete button
+                # Delete button
                 if st.button(f"Delete {item_name} from cart", key=f"delete_{item_id}"):
                     cursor.execute("SELECT cart_item_id FROM cart_items WHERE cart_id = %s AND item_id = %s",
                                    (cart_id, item_id))
@@ -141,6 +148,7 @@ def display_cart_details(connection, cart_id):
                 total_price = total_price_result[0]
                 st.write(f"Total Price: {total_price}")
 
+            #place order button
             if st.button("place order"):
                 print(1)
                 insert_bill(connection,cart_id)

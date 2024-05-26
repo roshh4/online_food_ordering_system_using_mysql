@@ -85,9 +85,10 @@ def display_menu_items(connection, selected_restaurant, cart_id):
                                 insert_cart(connection, cart_id, item_id, quantity, item_price)
 
                         elif quantity == 0:
-                            # Query cart_items to get the cart_item_id
+                            # Getting cart_item_id from cart_items using item_id and cart_id
                             cursor.execute("SELECT cart_item_id FROM cart_items WHERE cart_id = %s AND item_id = %s", (cart_id, item_id))
                             result = cursor.fetchone()
+
                             if result:
                                 cart_item_id = result[0]
                                 # Delete item from cart
