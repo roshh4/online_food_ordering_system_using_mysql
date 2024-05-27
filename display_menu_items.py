@@ -56,7 +56,7 @@ def display_menu_items(connection, selected_restaurant, cart_id):
                     item_id, item_name, item_price, item_des, item_veg = item
                     container = st.container(height=250)
                     with container:
-                        col1, col2, col3 = st.columns([30, 30, 10])
+                        col1, col2, col3 = st.columns([30, 14, 12])
                         with col1:
                             st.subheader(f"{item_name}", divider='rainbow')
                         with col3:

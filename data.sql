@@ -191,12 +191,13 @@ CREATE TABLE cart_items (
 desc bill;
 CREATE TABLE bill (
     bill_id INT auto_increment PRIMARY KEY,
-    cart_id INT UNIQUE,
+    cart_id INT,
     customer_id INT,
     amount DECIMAL(10, 2),
-    tax DECIMAL(5, 2),
-    discount DECIMAL(5, 2),
-    final_amount DECIMAL(10, 2),
+    cgst DECIMAL(5, 2),
+    sgst DECIMAL(5, 2),
+    service_charge DECIMAL(5, 2),
+    total_quantity INT,
     FOREIGN KEY (cart_id) REFERENCES cart_info(cart_id),
     FOREIGN KEY (customer_id) REFERENCES Customer(customer_id)
 );
@@ -209,9 +210,21 @@ drop table customer;
 ALTER TABLE menu_items
 ADD COLUMN images VARCHAR(255);
 
-UPDATE menu_items
-SET images = 'images\La_Trattoria\Bruschetta.jpeg'
-WHERE item_id = 1;
+UPDATE restaurants
+SET images = 'images\La_Trattoria.jpeg'
+WHERE restaurant_id = 1;
+UPDATE restaurants
+SET images = 'images\Sushi_World.jpeg'
+WHERE restaurant_id = 2;
+UPDATE restaurants
+SET images = 'images\Tacos_Fiesta.jpeg'
+WHERE restaurant_id = 3;
+UPDATE restaurants
+SET images = 'images\Burger_Haven.jpeg'
+WHERE restaurant_id = 4;
+UPDATE restaurants
+SET images = 'images\Dosa Delight.jpeg'
+WHERE restaurant_id = 5;
 
 UPDATE menu_items
 SET images = 'images\La_Trattoria\Garlic_Bread.jpeg'

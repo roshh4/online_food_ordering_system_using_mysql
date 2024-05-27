@@ -57,3 +57,4 @@ if conn:
         display_cart_details(conn,st.session_state['cart_id'])
     elif st.session_state['page'] == 'bill':
         display_bill(conn,st.session_state['cart_id'])
+
