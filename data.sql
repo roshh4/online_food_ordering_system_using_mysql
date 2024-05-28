@@ -198,6 +198,7 @@ CREATE TABLE bill (
     sgst DECIMAL(5, 2),
     service_charge DECIMAL(5, 2),
     total_quantity INT,
+    final_amount decimal(10,2),
     FOREIGN KEY (cart_id) REFERENCES cart_info(cart_id),
     FOREIGN KEY (customer_id) REFERENCES Customer(customer_id)
 );
