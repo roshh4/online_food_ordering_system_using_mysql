@@ -15,7 +15,7 @@ def insert_customer(connection, customer_name, contact_number, address, email):
         cursor.execute(query, (customer_name, contact_number, address, email))
         customer_id = cursor.lastrowid
         query_cart = "INSERT INTO cart_info (customer_id, total_price) VALUES (%s, %s)"
-        cursor.execute(query_cart, (customer_id, 0))  # Only provide customer_id and total_price
+        cursor.execute(query_cart, (customer_id, 0))
         cart_id = cursor.lastrowid
         st.session_state['cart_id'] = cart_id
         connection.commit()
@@ -57,4 +57,3 @@ if conn:
         display_cart_details(conn,st.session_state['cart_id'])
     elif st.session_state['page'] == 'bill':
         display_bill(conn,st.session_state['cart_id'])
-

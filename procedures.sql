@@ -47,6 +47,7 @@ CREATE PROCEDURE calculate_final_amount(
 )
 BEGIN
     DECLARE final_amount DECIMAL(10, 2);
+    select service_charge;
     SET final_amount = amount + cgst + sgst + service_charge;
 
     UPDATE bill
