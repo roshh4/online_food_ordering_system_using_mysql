@@ -8,8 +8,8 @@ BEGIN
 	DECLARE cgst DECIMAL(5, 2);
 	DECLARE sgst DECIMAL(5, 2);
 
-	SET cgst = total_price * 0.09;
-	SET sgst = total_price * 0.09;
+	SET cgst = total_price * 0.025;
+	SET sgst = total_price * 0.025;
 
 	UPDATE bill
 	SET cgst = cgst,
