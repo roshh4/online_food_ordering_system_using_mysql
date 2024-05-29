@@ -1,3 +1,5 @@
+#customer_details.py
+
 import streamlit as st
 
 def customer_details(conn, insert_customer):
