@@ -9,6 +9,9 @@ def display_bill(connection, cart_id):
 
         st.title("Bill Details")
 
+        name_lt = []
+        qty_lt = []
+        price_lt = []
         query = "SELECT item_id, quantity, total_price FROM cart_items WHERE cart_id = %s"
         cursor.execute(query, (cart_id,))
         cart_items = cursor.fetchall()
@@ -18,13 +21,16 @@ def display_bill(connection, cart_id):
             name = cursor.fetchone()
             if name:
                     item_name, = name
-            table = {
-                "Item Name":[item_name],
-                "Quantity":[item[1]],
-                "Total Price":[item[2]]
-            }
-            df = pd.DataFrame(table)
-            st.dataframe(df,hide_index=True)
+            name_lt.append(item_name)
+            qty_lt.append(item[1])
+            price_lt.append(item[2])
+        table = {
+            "Item Name":name_lt,
+            "Quantity":qty_lt,
+            "Total Price":price_lt
+        }
+        df = pd.DataFrame(table)
+        st.dataframe(df,hide_index=True)
             #st.subheader(f"Item Name : {(item_name)}")
             #st.subheader(f"Quantity: {item[1]}")
             #st.subheader(f"Total Price: {item[2]}")

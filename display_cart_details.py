@@ -85,7 +85,7 @@ def display_cart_details(connection, cart_id):
 
                 container = st.container(height=280)
                 with container:
-                    st.subheader(f"Item Name: {item_name}",divider="rainbow")
+                    st.subheader(f"{item_name}",divider="rainbow")
 
                     current_quantity = st.number_input(
                         f"Quantity for {item_name}:",
@@ -131,7 +131,7 @@ def display_cart_details(connection, cart_id):
                         st.subheader(f"Price: {updated_total_price_per_item}")
 
                     # Delete button
-                    if st.button(f"Delete {item_name} from cart", key=f"delete_{item_id}"):
+                    if st.button(f"Delete", key=f"delete_{item_id}"):
                         cursor.execute("SELECT cart_item_id FROM cart_items WHERE cart_id = %s AND item_id = %s",
                                     (cart_id, item_id))
                         result = cursor.fetchone()
@@ -151,7 +151,7 @@ def display_cart_details(connection, cart_id):
                 st.header(f"Total Price: {total_price}")
         
             #place order button
-            if st.button("place order"):
+            if st.button("Place Order"):
                 print(1)
                 insert_bill(connection,cart_id)
                 st.session_state['page'] = 'bill'
