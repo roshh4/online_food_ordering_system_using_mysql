@@ -6,7 +6,6 @@ from update_cart import update_cart
 from delete_item_from_cart import delete_item_from_cart
 
 def insert_bill(conn, cart_id):
-    print(2)
     try:
         cursor = conn.cursor()
 
