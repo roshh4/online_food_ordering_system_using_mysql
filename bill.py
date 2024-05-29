@@ -1,10 +1,33 @@
 import MySQLdb
 import streamlit as st
+import pandas as pd
 
 #function to display bill
 def display_bill(connection, cart_id):
     try:
         cursor = connection.cursor()
+
+        st.title("Bill Details")
+
+        query = "SELECT item_id, quantity, total_price FROM cart_items WHERE cart_id = %s"
+        cursor.execute(query, (cart_id,))
+        cart_items = cursor.fetchall()
+        for item in cart_items:
+            query = "SELECT item_name FROM menu_items WHERE item_id = %s"
+            cursor.execute(query, (item[0],))
+            name = cursor.fetchone()
+            if name:
+                    item_name, = name
+            table = {
+                "Item Name":[item_name],
+                "Quantity":[item[1]],
+                "Total Price":[item[2]]
+            }
+            df = pd.DataFrame(table)
+            st.dataframe(df,hide_index=True)
+            #st.subheader(f"Item Name : {(item_name)}")
+            #st.subheader(f"Quantity: {item[1]}")
+            #st.subheader(f"Total Price: {item[2]}")
 
         #
         query = """
@@ -15,30 +38,25 @@ def display_bill(connection, cart_id):
         cursor.execute(query, (cart_id,))
         bills = cursor.fetchall()
 
-        st.title("Bill Details")
-
         if bills:
             # Displaying the bill details
             for bill in bills:
-                st.write(f"Bill ID: {bill[0]}")
-                st.write(f"Cart ID: {bill[1]}")
-                st.write(f"Total Amount: {bill[2]}")
-                st.write(f"CGST: {bill[3]}")
-                st.write(f"SGST: {bill[4]}")
-                st.write(f"Service Charge: {bill[5]}")
-                st.write(f"quantity: {bill[6]}")
-                st.write("---")
+                container = st.container(height=490)
+                with container:
+                    col1, col2, col3 = st.columns([30, 20, 12])
+                    with col1:
+                        st.subheader(f"Bill ID: {bill[0]}")
+                    with col3:    
+                        st.subheader(f"Cart ID: {bill[1]}")
+                    st.divider()
+                    st.subheader(f"Total Quantity: {bill[6]}")
+                    st.subheader(f"Final Amount: {bill[2]}")
+                    
+                    with st.expander("Show Extras"):
+                        st.subheader(f"CGST: {bill[3]}")
+                        st.subheader(f"SGST: {bill[4]}")
+                        st.subheader(f"Service Charge: {bill[5]}")
 
-            query = "SELECT item_id, quantity, total_price FROM cart_items WHERE cart_id = %s"
-            cursor.execute(query, (cart_id,))
-            cart_items = cursor.fetchall()
-            for item in cart_items:
-                query = "SELECT item_name FROM menu_items WHERE item_id = %s"
-                cursor.execute(query, (item[0],))
-                name = cursor.fetchone()
-                st.write(f"item name : {name}")
-                st.write(f"quantity: {item[1]}")
-                st.write(f"Total price: {item[2]}")
 
         else:
             st.write("No bills found.")
