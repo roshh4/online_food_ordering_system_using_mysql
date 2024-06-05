@@ -1,6 +1,9 @@
+#bill.py
+
 import MySQLdb
 import streamlit as st
 import pandas as pd
+from delete_from_bill import delete_from_bill
 
 #function to display bill
 def display_bill(connection, cart_id):
@@ -68,6 +71,7 @@ def display_bill(connection, cart_id):
             st.write("No bills found.")
 
         if st.button("Back"):
+            delete_from_bill(connection, cart_id)
             st.session_state['page'] = 'display_cart_details'
             st.rerun()
 
