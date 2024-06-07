@@ -5,11 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="16715561-6619-4e99-a4ea-f97bade93ef1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/delete_from_bill.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bill.py" beforeDir="false" afterPath="$PROJECT_DIR$/bill.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/display_cart_details.py" beforeDir="false" afterPath="$PROJECT_DIR$/display_cart_details.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/update_cart.py" beforeDir="false" afterPath="$PROJECT_DIR$/update_cart.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,7 +40,7 @@
     &quot;Python.display_cart_details.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/dbms_mp&quot;
+    &quot;last_opened_file_path&quot;: &quot;D:/college/4th_sem/dbms_mp&quot;
   }
 }</component>
   <component name="SharedIndexes">
